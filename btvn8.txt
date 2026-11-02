@@ -1,0 +1,16 @@
+Phần 1: Phân tích
+
+1. Hai file css và json lấy từ cache trên máy (2ms), không gửi request lên server. Cache còn hạn nên F5 vẫn dùng bản cũ.
+
+2. Hacker chạy document.cookie rồi gửi về máy hacker. Thiếu HttpOnly thì JavaScript đọc được cookie. Thiếu Secure thì cookie có thể bị nghe lén qua HTTP. Hậu quả: hacker dùng token đăng nhập như bác sĩ, xem và sửa hồ sơ bệnh án mà không cần mật khẩu.
+
+Phần 2: Giải pháp
+
+3. Nhấn Ctrl + Shift + R (hoặc Ctrl + F5). Trình duyệt bỏ cache và tải file mới, không cần xóa lịch sử.
+
+4. Set-Cookie: carepulse_doctor_session=TOKEN_XYZ883921983; Domain=carepulse.vn; Path=/; Expires=Wed, 21 Oct 2026 07:00:00 GMT; HttpOnly; Secure; SameSite=Strict
+
+5. Ba bước:
+- F12, tab Application, Cookies, xem cookie có tick HttpOnly và Secure chưa.
+- Tab Network, tick Disable cache.
+- F5, kiểm tra cột Size không còn (from disk cache).
